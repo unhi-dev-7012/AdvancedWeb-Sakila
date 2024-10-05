@@ -8,27 +8,27 @@ export class ActorsController {
   constructor(private readonly actorsService: ActorsService) {}
 
   @Post()
-  create(@Body() createActorDto: CreateActorDto) {
+  async create(@Body() createActorDto: CreateActorDto) {
     return this.actorsService.create(createActorDto);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.actorsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.actorsService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateActorDto: UpdateActorDto) {
+  async update(@Param('id') id: string, @Body() updateActorDto: UpdateActorDto) {
     return this.actorsService.update(+id, updateActorDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.actorsService.remove(+id);
   }
 }
