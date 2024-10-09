@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateActorDto } from './dto/create-actor.dto';
 import { UpdateActorDto } from './dto/update-actor.dto';
 import { DataSource, EntityManager, Repository } from 'typeorm';
@@ -28,11 +28,16 @@ export class ActorsService {
     return this.actorsRepository.find();
   }
 
-  findOne(actor_id: number) {
-    return this.actorsRepository.findOne({
+  async findOne(actor_id: number) {
+    const actor = await this.actorsRepository.findOne({
       where: {actorId: actor_id},
       relations: ['films']
     });
+    if (!actor){
+      throw new NotFoundException(`Actor with id ${actor_id} not found`);
+    }
+    return actor;
+
   }
 
   async update(actor_id: number, updateActorDto: UpdateActorDto) {
