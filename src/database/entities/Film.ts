@@ -5,16 +5,15 @@ import {
   JoinColumn,
   JoinTable,
   ManyToMany,
+  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-// import { FilmActor } from "./FilmActor";
+
 import { Actor } from "./Actor";
-// import { FilmActor } from "./FilmActor";
-
-
-// import { FilmCategory } from "./FilmCategory";
-// import { Inventory } from "./Inventory";
-// import { Language } from "./Language";
+import { FilmCategory } from "./FilmCategory";
+import { Inventory } from "./Inventory";
+import { Language } from "./Language";
 
 export enum MpaaRating {
   G = 'G',
@@ -26,8 +25,8 @@ export enum MpaaRating {
 
 @Index("film_pkey", ["filmId"], { unique: true })
 @Index("film_fulltext_idx", ["fulltext"], {})
-// @Index("idx_fk_language_id", ["languageId"], {})
-// @Index("idx_fk_original_language_id", ["originalLanguageId"], {})
+@Index("idx_fk_language_id", ["languageId"], {})
+@Index("idx_fk_original_language_id", ["originalLanguageId"], {})
 @Index("idx_title", ["title"], {})
 @Entity("film", { schema: "public" })
 export class Film {
@@ -43,14 +42,14 @@ export class Film {
   @Column("integer", { name: "release_year", nullable: true })
   releaseYear: number | null;
 
-  // @Column("integer", { name: "language_id" })
-  // languageId: number;
+  @Column("integer", { name: "language_id" })
+  languageId: number;
 
-  // @Column("integer", { name: "original_language_id", nullable: true })
-  // originalLanguageId: number | null;
+  @Column("integer", { name: "original_language_id", nullable: true })
+  originalLanguageId: number | null;
 
-  // @Column("smallint", { name: "rental_duration", default: () => "3" })
-  // rentalDuration: number;
+  @Column("smallint", { name: "rental_duration", default: () => "3" })
+  rentalDuration: number;
 
   @Column("numeric", {
     name: "rental_rate",
@@ -104,6 +103,29 @@ export class Film {
       }
   })
   actors: Actor[];
+
+  
+  @ManyToOne(() => Language, (language) => language.films, {
+    onDelete: "RESTRICT",
+    onUpdate: "CASCADE",
+  })
+  @JoinColumn([{ name: "language_id", referencedColumnName: "languageId" }])
+  language: Language;
+
+  @ManyToOne(() => Language, (language) => language.films2, {
+    onDelete: "RESTRICT",
+    onUpdate: "CASCADE",
+  })
+  @JoinColumn([
+    { name: "original_language_id", referencedColumnName: "languageId" },
+  ])
+  originalLanguage: Language;
+
+  @OneToMany(() => FilmCategory, (filmCategory) => filmCategory.film)
+  filmCategories: FilmCategory[];
+
+  @OneToMany(() => Inventory, (inventory) => inventory.film)
+  inventories: Inventory[];
 
   constructor(film: Partial<Film>)
   {
