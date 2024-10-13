@@ -80,11 +80,15 @@ export class LanguagesService {
     try {
       const language = await this.languagesRepository.findOneBy({languageId: id});
       if(!language) {
-        throw new HttpException(`Language with if ${id} does not exist`, HttpStatus.NOT_FOUND);
+        return {
+          success: false,
+          message: `Language with ID ${id} not found`,
+          data: {},
+        };
       }
       const count =  await this.filmsService.countFilmByLanguageId(id);
       if(count > 0){
-        throw new HttpException(`Language with id ${id} cannot be deleted because it is associated with one or more films.`, HttpStatus.FORBIDDEN);
+        throw new HttpException(`Language with id ${id} cannot be deleted because it is associated with one or more films.`, HttpStatus.BAD_REQUEST);
       }
       await this.languagesRepository.remove(language);
       return {

@@ -1,4 +1,5 @@
 import {
+  HttpCode,
   HttpException,
   HttpStatus,
   Injectable,
@@ -58,6 +59,7 @@ export class ActorsService {
         data: actor,
       };
     } catch (error) {
+      
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -85,8 +87,6 @@ export class ActorsService {
       const actor = await this.actorsRepository.findOneBy({
         actorId: actor_id,
       });
-
-      console.log(actor);
 
       if (!actor) {
         return {

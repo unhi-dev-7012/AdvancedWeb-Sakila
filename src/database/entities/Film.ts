@@ -130,5 +130,8 @@ export class Film {
   {
     Object.assign(this, film);
   }
+  
+  // @DeleteDateColumn()
+  // deleteAt?: Date
 
 }
