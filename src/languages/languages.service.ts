@@ -1,15 +1,19 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { CreateLanguageDto } from './dto/create-language.dto';
 import { UpdateLanguageDto } from './dto/update-language.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Language } from 'src/database/entities/Language';
 import { Repository } from 'typeorm';
+import { FilmsService } from 'src/films/films.service';
+
 
 @Injectable()
 export class LanguagesService {
   constructor(
     @InjectRepository(Language)
-    private readonly languagesRepository: Repository<Language>
+    private readonly languagesRepository: Repository<Language>,
+    @Inject(forwardRef(() => FilmsService))
+    private readonly filmsService: FilmsService
   ){}
   async create(createLanguageDto: CreateLanguageDto) {
     const language = new Language(createLanguageDto);
@@ -21,7 +25,6 @@ export class LanguagesService {
         data: language,
       };
     } catch (error) {
-      // throw new Error(`Failed to create : ${error.message}`);
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
@@ -73,7 +76,24 @@ export class LanguagesService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} language`;
+  async remove(id: number) {
+    try {
+      const language = await this.languagesRepository.findOneBy({languageId: id});
+      if(!language) {
+        throw new HttpException(`Language with if ${id} does not exist`, HttpStatus.NOT_FOUND);
+      }
+      const count =  await this.filmsService.countFilmByLanguageId(id);
+      if(count > 0){
+        throw new HttpException(`Language with id ${id} cannot be deleted because it is associated with one or more films.`, HttpStatus.FORBIDDEN);
+      }
+      await this.languagesRepository.remove(language);
+      return {
+        success: true,
+        message: `Language with id ${id} has been deleted successfully.`,
+      };
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
   }
 }

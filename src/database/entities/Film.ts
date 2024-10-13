@@ -104,7 +104,6 @@ export class Film {
   })
   actors: Actor[];
 
-  
   @ManyToOne(() => Language, (language) => language.films, {
     onDelete: "RESTRICT",
     onUpdate: "CASCADE",

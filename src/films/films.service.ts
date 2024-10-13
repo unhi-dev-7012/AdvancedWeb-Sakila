@@ -3,7 +3,7 @@ import { CreateFilmDto } from './dto/create-film.dto';
 import { UpdateFilmDto } from './dto/update-film.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Film } from 'src/database/entities/Film';
-import { EntityManager, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { LanguagesService } from 'src/languages/languages.service';
 
 @Injectable()
@@ -12,7 +12,6 @@ export class FilmsService {
   constructor(
     @InjectRepository(Film)
     private readonly filmsRepository: Repository<Film>,
-    private readonly entityManager: EntityManager,
     private readonly languagesService: LanguagesService,
   ){}
 
@@ -52,5 +51,11 @@ export class FilmsService {
 
   remove(id: number) {
     return `This action removes a #${id} film`;
+  }
+
+  async countFilmByLanguageId(languageId: number): Promise<number>{
+    return await this.filmsRepository.count({
+      where: {languageId: languageId}
+    });
   }
 }

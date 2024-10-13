@@ -7,10 +7,11 @@ import { LanguagesModule } from 'src/languages/languages.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Film]), // Register the Actor entity
+    TypeOrmModule.forFeature([Film]),
     forwardRef(() => LanguagesModule),
   ],
   controllers: [FilmsController],
   providers: [FilmsService],
+  exports: [FilmsService]
 })
 export class FilmsModule {}

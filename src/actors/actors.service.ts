@@ -81,8 +81,6 @@ export class ActorsService {
   }
 
   async remove(actor_id: number) {
-    console.log(actor_id);
-
     try {
       const actor = await this.actorsRepository.findOneBy({
         actorId: actor_id,
