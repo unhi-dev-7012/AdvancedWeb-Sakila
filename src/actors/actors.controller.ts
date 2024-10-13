@@ -3,7 +3,7 @@ import { ActorsService } from './actors.service';
 import { CreateActorDto } from './dto/create-actor.dto';
 import { UpdateActorDto } from './dto/update-actor.dto';
 
-@Controller('actors')
+@Controller('api/user/v1/actors')
 export class ActorsController {
   constructor(private readonly actorsService: ActorsService) {}
 

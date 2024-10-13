@@ -27,4 +27,8 @@ export class Language {
 
   @OneToMany(() => Film, (film) => film.originalLanguage)
   films2: Film[];
+
+  constructor(language: Partial<Language>){
+    Object.assign(this, language);
+  }
 }

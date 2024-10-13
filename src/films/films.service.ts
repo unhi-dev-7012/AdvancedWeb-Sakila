@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateFilmDto } from './dto/create-film.dto';
 import { UpdateFilmDto } from './dto/update-film.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Film } from 'src/database/entities/Film';
 import { EntityManager, Repository } from 'typeorm';
+import { LanguagesService } from 'src/languages/languages.service';
 
 @Injectable()
 export class FilmsService {
@@ -11,11 +12,30 @@ export class FilmsService {
   constructor(
     @InjectRepository(Film)
     private readonly filmsRepository: Repository<Film>,
-    private readonly entityManager: EntityManager 
+    private readonly entityManager: EntityManager,
+    private readonly languagesService: LanguagesService,
   ){}
 
-  create(createFilmDto: CreateFilmDto) {
-    return 'This action adds a new film';
+  async create(createFilmDto: CreateFilmDto) {
+    const language = await this.languagesService.findOne(createFilmDto.languageId);
+    if(!language.data){
+      return {
+        message: 'Language not found',
+      };
+    }
+    try {
+      const film = new Film(createFilmDto);
+      await this.filmsRepository.insert(film);
+      return {
+        success: true,
+        message: 'Create film successfully',
+        data: language,
+      };
+      
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
   }
 
   findAll() {
