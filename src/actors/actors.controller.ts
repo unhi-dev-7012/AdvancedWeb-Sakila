@@ -1,9 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ActorsService } from './actors.service';
 import { CreateActorDto } from './dto/create-actor.dto';
 import { UpdateActorDto } from './dto/update-actor.dto';
 
-@Controller('actors')
+@Controller('api/user/v1/actors')
 export class ActorsController {
   constructor(private readonly actorsService: ActorsService) {}
 
@@ -23,7 +31,10 @@ export class ActorsController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateActorDto: UpdateActorDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateActorDto: UpdateActorDto,
+  ) {
     return this.actorsService.update(+id, updateActorDto);
   }
 

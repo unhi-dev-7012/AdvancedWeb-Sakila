@@ -7,25 +7,25 @@ import {
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
-} from "typeorm";
-import { Customer } from "./Customer";
-import { Inventory } from "./Inventory";
-import { Staff } from "./Staff";
-import { Address } from "./Address";
+} from 'typeorm';
+import { Customer } from './Customer';
+import { Inventory } from './Inventory';
+import { Staff } from './Staff';
+import { Address } from './Address';
 
-@Index("idx_unq_manager_staff_id", ["managerStaffId"], { unique: true })
-@Index("store_pkey", ["storeId"], { unique: true })
-@Entity("store", { schema: "public" })
+@Index('idx_unq_manager_staff_id', ['managerStaffId'], { unique: true })
+@Index('store_pkey', ['storeId'], { unique: true })
+@Entity('store', { schema: 'public' })
 export class Store {
-  @PrimaryGeneratedColumn({ type: "integer", name: "store_id" })
+  @PrimaryGeneratedColumn({ type: 'integer', name: 'store_id' })
   storeId: number;
 
-  @Column("integer", { name: "manager_staff_id" })
+  @Column('integer', { name: 'manager_staff_id' })
   managerStaffId: number;
 
-  @Column("timestamp without time zone", {
-    name: "last_update",
-    default: () => "now()",
+  @Column('timestamp without time zone', {
+    name: 'last_update',
+    default: () => 'now()',
   })
   lastUpdate: Date;
 
@@ -39,16 +39,16 @@ export class Store {
   staff: Staff[];
 
   @ManyToOne(() => Address, (address) => address.stores, {
-    onDelete: "RESTRICT",
-    onUpdate: "CASCADE",
+    onDelete: 'RESTRICT',
+    onUpdate: 'CASCADE',
   })
-  @JoinColumn([{ name: "address_id", referencedColumnName: "addressId" }])
+  @JoinColumn([{ name: 'address_id', referencedColumnName: 'addressId' }])
   address: Address;
 
   @OneToOne(() => Staff, (staff) => staff.store, {
-    onDelete: "RESTRICT",
-    onUpdate: "CASCADE",
+    onDelete: 'RESTRICT',
+    onUpdate: 'CASCADE',
   })
-  @JoinColumn([{ name: "manager_staff_id", referencedColumnName: "staffId" }])
+  @JoinColumn([{ name: 'manager_staff_id', referencedColumnName: 'staffId' }])
   managerStaff: Staff;
 }

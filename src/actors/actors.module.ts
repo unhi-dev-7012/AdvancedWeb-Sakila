@@ -4,7 +4,6 @@ import { ActorsController } from './actors.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Actor } from 'src/database/entities/Actor';
 
-
 @Module({
   imports: [
     TypeOrmModule.forFeature([Actor]), // Register the Actor entity

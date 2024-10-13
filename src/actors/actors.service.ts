@@ -1,12 +1,7 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateActorDto } from './dto/create-actor.dto';
 import { UpdateActorDto } from './dto/update-actor.dto';
-import { DataSource, EntityManager, Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Actor } from 'src/database/entities/Actor';
 
@@ -49,9 +44,11 @@ export class ActorsService {
   async findOne(actor_id: number) {
     try {
       const actor = await this.actorsRepository.findOne({
-        where: { actorId: actor_id }
+        where: { actorId: actor_id },
       });
-      const message = actor ? `Finding actor with id ${actor_id} successfully` : `Can't finding actor with id ${actor_id}`;
+      const message = actor
+        ? `Finding actor with id ${actor_id} successfully`
+        : `Can't finding actor with id ${actor_id}`;
       return {
         success: actor ? true : false,
         message: message,
@@ -60,7 +57,6 @@ export class ActorsService {
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
   }
 
   async update(actor_id: number, updateActorDto: UpdateActorDto) {
@@ -106,7 +102,6 @@ export class ActorsService {
         message: `Actor with ID ${actor_id} has been removed successfully`,
         data: {},
       };
-
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }

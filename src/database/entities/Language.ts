@@ -4,21 +4,21 @@ import {
   Index,
   OneToMany,
   PrimaryGeneratedColumn,
-} from "typeorm";
-import { Film } from "./Film";
+} from 'typeorm';
+import { Film } from './Film';
 
-@Index("language_pkey", ["languageId"], { unique: true })
-@Entity("language", { schema: "public" })
+@Index('language_pkey', ['languageId'], { unique: true })
+@Entity('language', { schema: 'public' })
 export class Language {
-  @PrimaryGeneratedColumn({ type: "integer", name: "language_id" })
+  @PrimaryGeneratedColumn({ type: 'integer', name: 'language_id' })
   languageId: number;
 
-  @Column("character", { name: "name", length: 20 })
+  @Column('character', { name: 'name', length: 20 })
   name: string;
 
-  @Column("timestamp without time zone", {
-    name: "last_update",
-    default: () => "now()",
+  @Column('timestamp without time zone', {
+    name: 'last_update',
+    default: () => 'now()',
   })
   lastUpdate: Date;
 
@@ -27,4 +27,8 @@ export class Language {
 
   @OneToMany(() => Film, (film) => film.originalLanguage)
   films2: Film[];
+
+  constructor(language: Partial<Language>) {
+    Object.assign(this, language);
+  }
 }

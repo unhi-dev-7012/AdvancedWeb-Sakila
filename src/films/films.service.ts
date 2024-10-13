@@ -1,21 +1,40 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateFilmDto } from './dto/create-film.dto';
 import { UpdateFilmDto } from './dto/update-film.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Film } from 'src/database/entities/Film';
 import { EntityManager, Repository } from 'typeorm';
+import { LanguagesService } from '../languages/languages.service';
 
 @Injectable()
 export class FilmsService {
-
   constructor(
     @InjectRepository(Film)
     private readonly filmsRepository: Repository<Film>,
-    private readonly entityManager: EntityManager 
-  ){}
+    private readonly entityManager: EntityManager,
+    private readonly languageService: LanguagesService,
+  ) {}
 
-  create(createFilmDto: CreateFilmDto) {
-    return 'This action adds a new film';
+  async create(createFilmDto: CreateFilmDto) {
+    const language = await this.languageService.findOne(
+      createFilmDto.languageId,
+    );
+    if (!language.data) {
+      return {
+        message: 'Language not found!',
+      };
+    }
+
+    try {
+      const film = new Film(createFilmDto);
+      return {
+        success: true,
+        message: 'Create film successfully',
+        data: film,
+      };
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   findAll() {
@@ -23,7 +42,7 @@ export class FilmsService {
   }
 
   findOne(film_id: number) {
-    return this.filmsRepository.findOneBy({filmId: film_id});
+    return this.filmsRepository.findOneBy({ filmId: film_id });
   }
 
   update(id: number, updateFilmDto: UpdateFilmDto) {
