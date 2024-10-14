@@ -11,14 +11,14 @@ async function bootstrap() {
     transform: true,         // Tự động chuyển đổi kiểu dữ liệu
   }));
   //Config Swagger
-  // const swaggerConfig = new DocumentBuilder()
-  //   .setTitle('My API')
-  //   .setDescription('API documentation with OpenAPI 3.0')
-  //   .setVersion('1.0')
-  //   .build();
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('My API')
+    .setDescription('API documentation with OpenAPI 3.0')
+    .setVersion('1.0')
+    .build();
 
-  // const document = SwaggerModule.createDocument(app, swaggerConfig);
-  // SwaggerModule.setup('api-docs', app, document);
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('api-docs', app, document);
   
   await app.listen(3000);
 }
