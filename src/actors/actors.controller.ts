@@ -77,6 +77,16 @@ export class ActorsController {
       },
     },
   })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Find all actor failed',
+    schema: {
+      example: {
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: 'This is the error message.',
+      },
+    },
+  })
   @Get()
   async findAll() {
     return this.actorsService.findAll();
