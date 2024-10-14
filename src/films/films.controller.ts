@@ -94,7 +94,7 @@ export class FilmsController {
   })
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR,
-    description: 'Find all film failed',
+    description: 'Find all films failed',
     schema: {
       example: {
         statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -150,7 +150,6 @@ export class FilmsController {
     return this.filmsService.findOne(+id);
   }
 
-  @Patch(':id')
   @ApiOperation({ summary: 'Update film Information' })
   @ApiParam({
     name: 'id',
