@@ -43,14 +43,14 @@ export class Film {
   @Column("integer", { name: "release_year", nullable: true })
   releaseYear: number | null;
 
-  // @Column("integer", { name: "language_id" })
-  // languageId: number;
+  @Column("integer", { name: "language_id" })
+  languageId: number;
 
-  // @Column("integer", { name: "original_language_id", nullable: true })
-  // originalLanguageId: number | null;
+  @Column("integer", { name: "original_language_id", nullable: true })
+  originalLanguageId: number | null;
 
-  // @Column("smallint", { name: "rental_duration", default: () => "3" })
-  // rentalDuration: number;
+  @Column("smallint", { name: "rental_duration", default: () => "3" })
+  rentalDuration: number;
 
   @Column("numeric", {
     name: "rental_rate",

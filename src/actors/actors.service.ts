@@ -68,8 +68,8 @@ export class ActorsService {
       const actor = await this.actorsRepository.findOneBy({
         actorId: actor_id,
       });
-      await this.entityManager.save(actor);
-
+      Object.assign(actor, updateActorDto);
+      await this.actorsRepository.update(actor_id, actor);
       return {
         success: true,
         message: 'Update actor successfully',
