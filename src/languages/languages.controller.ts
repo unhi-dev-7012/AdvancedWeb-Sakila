@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  HttpCode,
   HttpStatus,
 } from '@nestjs/common';
 import { LanguagesService } from './languages.service';
