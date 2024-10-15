@@ -1,9 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpStatus,
+} from '@nestjs/common';
 import { FilmsService } from './films.service';
 import { CreateFilmDto } from './dto/create-film.dto';
 import { UpdateFilmDto } from './dto/update-film.dto';
 
-@Controller('/api/films')
+@Controller('api/user/v1/films')
 export class FilmsController {
   constructor(private readonly filmsService: FilmsService) {}
 
@@ -27,8 +36,8 @@ export class FilmsController {
     return this.filmsService.update(+id, updateFilmDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.filmsService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.filmsService.remove(+id);
+  // }
 }

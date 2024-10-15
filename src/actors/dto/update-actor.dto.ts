@@ -1,7 +1,9 @@
+import { ApiProperty } from "@nestjs/swagger";
+import { IsString, Length } from "class-validator";
 
 export class UpdateActorDto {
 
-    // Data validation here (update new week)
-    firstName: string;
-    lastName: string;
+    firstName!: string;
+    
+    lastName!: string;
 }
