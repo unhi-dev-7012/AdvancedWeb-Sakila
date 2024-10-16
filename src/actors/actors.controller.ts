@@ -2,8 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ActorsService } from './actors.service';
 import { CreateActorDto } from './dto/create-actor.dto';
 import { UpdateActorDto } from './dto/update-actor.dto';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Actors')
 @Controller('api/user/v1/actors')
 export class ActorsController {
   constructor(private readonly actorsService: ActorsService) {}
@@ -12,9 +13,10 @@ export class ActorsController {
   @ApiOperation({description: "Create a new actor"})
   @ApiResponse({
     status: 200,
+    description: "",
     example: {
       success: true,
-      message: "Can't finding actor with id 10203",
+      message: "",
       data: {
         actorId: 1,
         firstName: "Actor's first name",
