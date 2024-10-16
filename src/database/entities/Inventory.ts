@@ -1,5 +1,6 @@
 import {
   Column,
+  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
@@ -29,6 +30,9 @@ export class Inventory {
     default: () => "now()",
   })
   lastUpdate: Date;
+
+  // @DeleteDateColumn()
+  // deleteAt?: Date
 
   @ManyToOne(() => Film, (film) => film.inventories, {
     onDelete: "RESTRICT",

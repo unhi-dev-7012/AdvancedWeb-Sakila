@@ -104,7 +104,6 @@ export class Film {
   })
   actors: Actor[];
 
-  
   @ManyToOne(() => Language, (language) => language.films, {
     onDelete: "RESTRICT",
     onUpdate: "CASCADE",
@@ -131,5 +130,8 @@ export class Film {
   {
     Object.assign(this, film);
   }
+  
+  // @DeleteDateColumn()
+  // deleteAt?: Date
 
 }

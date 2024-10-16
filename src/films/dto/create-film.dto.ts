@@ -1,20 +1,27 @@
-import { IsNumber, IsOptional, IsString, Length } from "class-validator";
+import { MpaaRating } from 'src/database/entities/Film';
 
 export class CreateFilmDto {
-    @IsString()
-    @Length(1, 255, {message: 'First name must be less than 255 characters'})
-    title!: string;
+  title: string;
 
-    @IsString()
-    @IsOptional()
-    description?: string; 
+  description: string | null;
 
-    @IsNumber()
-    @IsOptional()
-    releaseYear?: number;
+  releaseYear: number | null;
 
-    @IsNumber()
-    languaeId: number;
+  languageId: number;
 
+  originalLanguageId: number | null;
 
+  rentalDuration: number;
+
+  rentalRate: number;
+
+  length: number | undefined;
+
+  replacementCost: number;
+  rating: MpaaRating | null; // Change type to the enum
+  lastUpdate: Date;
+
+  specialFeatures: string[] | null;
+
+  fulltext: string;
 }
